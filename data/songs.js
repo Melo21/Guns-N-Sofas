@@ -1,5 +1,5 @@
 /*
- * Strum Setlist song data.
+ * Guns N' Sofas song data.
  *
  * Each song: chapter, level (easy | medium | stretch), key it sounds in, capo fret,
  * bpm [start tempo, record tempo or null], and sections of bars.

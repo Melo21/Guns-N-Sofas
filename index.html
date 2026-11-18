@@ -3,14 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Strum Setlist</title>
-<meta name="description" content="Guitar practice for people who know open chords: songs by level, play-along with real guitar sound, a TV chord highway, a tuner, and practice games.">
+<title>Guns N' Sofas</title>
+<meta name="description" content="Guns N' Sofas: couch guitar practice. Songs by level, a play-along with real guitar sound, a TV chord highway, a tuner, and practice drills.">
+<meta name="theme-color" content="#0f766e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Guns N' Sofas">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="icons/icon-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@500;700&display=swap">
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-<div class="wrap" id="app"></div>
+<header class="appbar" id="appbar"></header>
+<main class="wrap" id="app"></main>
+<nav class="tabbar" id="tabbar" aria-label="Main"></nav>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 <div class="player" id="player" hidden>
   <div class="player-in">
     <div class="prow">
@@ -76,6 +88,7 @@
 <script src="js/chord-changes.js"></script>
 <script src="js/arcade.js"></script>
 <script src="js/tuner.js"></script>
+<script src="js/shell.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

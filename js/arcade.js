@@ -8,23 +8,12 @@ const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(M
 const pick=a=>a[Math.floor(Math.random()*a.length)];
 const arrows=p=>[...p].map(d=>SYM[d]);
 function playShape(shape){const c=ac();if(c.state==='suspended')c.resume();strum(c.currentTime+.03,shape,0,'D',false)}
-function header(eyebrow,title,blurb){return `<a class="back" href="#arcade">← Arcade</a><header style="display:flex;flex-direction:column;gap:8px"><p class="eyebrow">${eyebrow}</p><h2>${title}</h2>${blurb?`<p class="muted">${blurb}</p>`:''}</header>`}
+function header(eyebrow,title,blurb){return `${pageHead(title,blurb,['#practice','Practice'])}`}
 const LEVELS={open:{name:'Open chords',pool:['G','C','D','Em','Am','A','E']},
   sevenths:{name:'Plus sevenths',pool:['G','C','D','Em','Am','A','E','E7','A7','B7','D7','Cadd9','Dsus4']},
   barres:{name:'Plus barres',pool:['C','D','Em','Am','A','E','F','Bm','F#m','B','Bb','G#m']}};
 
-function arcade(){
-  stop();$('#player').hidden=true;const b=bestAll();
-  const best=(prefix,fmt)=>{const v=Object.entries(b).filter(([k])=>k.startsWith(prefix)).map(([,v])=>v);return v.length?fmt(Math.max(...v)):'–'};
-  const games=[
-   {id:'roulette',name:'Chord Roulette',tag:'Fretting hand · guitar in hand',what:'Random chords on a steady click. Form each one before beat 1, then hear the reference strum and check that yours matches. Builds instant recall of shapes, like reading a chord chart on sight.',best:best('roulette:',v=>v+' bpm')},
-   {id:'strumback',name:'Strum It Back',tag:'Rhythm by ear · guitar in hand',what:'Hear a one-bar strum pattern, pick which one it was, then loop it and play it back on your guitar. This is how you learn a song\'s strum from a recording.',best:best('strumback',v=>v+' / 10')},
-   {id:'ear',name:'Name That Chord',tag:'Ear training',what:'Hear a chord and name it. Teaches you to hear major, minor, seventh, and barre chords, so you can catch your own wrong chords and work songs out by ear.',best:best('ear:',v=>v+' / 10')}];
-  $('#app').innerHTML=`<header style="display:flex;flex-direction:column;gap:8px"><p class="eyebrow">Practice games</p><h1>Arcade</h1>
-   <p class="muted">Every game here trains a real playing skill. Two of them are played on your guitar, with the phone propped up in front of you. Best scores are saved on this device.</p></header>${nav('arcade')}
-   <div class="list">${games.map(g=>`<a class="game" href="#game-${g.id}"><span class="meta"><span class="eyebrow">${g.tag}</span><span class="t">${g.name}</span><span class="muted" style="font-size:.9rem">${g.what}</span></span>
-    <span class="gbest"><span class="eyebrow">Best</span><b>${g.best}</b></span></a>`).join('')}</div>`;
-}
+function arcade(){practice()}
 
 /* ----- Chord Roulette (play on the guitar, paced by the click) ----- */
 const RL={level:'open',bpm:60,beats:4,showShape:true,ref:true,count:16};
@@ -51,7 +40,7 @@ function roulettePlay(){
   stopGames();const c=ac();if(c.state==='suspended')c.resume();loadSamples();wakeOn();G.running=true;
   const pool=LEVELS[RL.level].pool,seq=[];while(seq.length<RL.count){const n=pick(pool);if(n!==seq[seq.length-1])seq.push(n)}
   const beat=60/RL.bpm,t0=c.currentTime+.6,start=t0+4*beat,total=RL.count*RL.beats;
-  $('#app').innerHTML=`<a class="back" href="#game-roulette">← Stop</a>
+  $('#app').innerHTML=`<a class="back" href="#game-roulette">‹ Stop</a>
    <div class="hud"><div><span class="eyebrow">Chord</span><b id="rN">0 / ${RL.count}</b></div><div><span class="eyebrow">Tempo</span><b>${RL.bpm}</b></div></div>
    <div class="stage" id="rStage"><span class="eyebrow" id="rLabel">Get ready</span><span class="big" id="rNow" style="font-size:5rem">${seq[0]}</span>
     <div class="big-diag" id="rDiag" ${RL.showShape?'':'hidden'}>${diagram(SHAPES[seq[0]])}</div><div class="beats" id="rBeats">${'<span class="dot"></span>'.repeat(4)}</div></div>
@@ -72,7 +61,7 @@ function roulettePlay(){
 }
 function rouletteDone(){G.running=false;idleWake();
   const key='roulette:'+RL.level+':'+RL.beats;
-  $('#app').innerHTML=`<a class="back" href="#game-roulette">← Chord Roulette</a>
+  $('#app').innerHTML=`<a class="back" href="#game-roulette">‹ Chord Roulette</a>
    <div class="trainer" style="align-items:center;text-align:center"><p class="eyebrow">${LEVELS[RL.level].name} · every ${RL.beats} beats</p>
    <div class="big" style="font-size:3.5rem">${RL.count} chords</div><p>at ${RL.bpm} bpm. Did every chord ring clearly on beat 1?</p>
    <div class="pair" style="justify-content:center"><button class="btn" id="rClean">Yes, all clean</button><button class="btn ghost" id="rMessy">Some were late or buzzed</button></div>
@@ -110,7 +99,7 @@ function sbRound(){
   SB2.round++;SB2.locked=false;const ans=pick(PATTERNS);SB2.ans=ans;
   const chord=pick(['G','C','D','Em','A','Am']),shape=SHAPES[chord];
   const opts=shuffle([ans,...shuffle(PATTERNS.filter(x=>x!==ans)).slice(0,3)]);
-  $('#app').innerHTML=`<a class="back" href="#game-strumback">← Quit</a>
+  $('#app').innerHTML=`<a class="back" href="#game-strumback">‹ Quit</a>
    <div class="hud"><div><span class="eyebrow">Round</span><b>${SB2.round} / 10</b></div><div><span class="eyebrow">Score</span><b>${SB2.score}</b></div><div><span class="eyebrow">Chord</span><b>${chord}</b></div></div>
    <div class="stage"><button class="listen" id="bHear" aria-label="Play the pattern again">▶</button><p class="muted" id="bMsg">Listen: one bar of clicks, then two bars of the pattern.</p></div>
    <div class="patopts">${opts.map((o,i)=>`<button class="ans pat" data-i="${i}"><span class="pa">${arrows(o.p).map(a=>`<i>${a}</i>`).join('')}</span><span class="cnt8">${['1','&','2','&','3','&','4','&'].map(n=>`<i>${n}</i>`).join('')}</span></button>`).join('')}</div>
@@ -131,7 +120,7 @@ function sbRound(){
 }
 function sbDone(){
   const nb=setBest('strumback',SB2.score);
-  $('#app').innerHTML=`<a class="back" href="#game-strumback">← Strum It Back</a>
+  $('#app').innerHTML=`<a class="back" href="#game-strumback">‹ Strum It Back</a>
    <div class="trainer" style="align-items:center;text-align:center"><p class="eyebrow">${SB2.bpm} bpm</p>
    <div class="big" style="font-size:4rem">${SB2.score} / 10</div><p class="muted">${nb?'New best':''}</p>
    <p>${SB2.score>=9?'You can hear strum patterns well. Try the Quick tempo, then try working out a strum from a real recording.':SB2.score>=6?'Good. Most mix-ups come from where the up strums fall. Count along out loud while you listen.':'Try Slow tempo and count "one and two and" out loud while it plays.'}</p>
@@ -154,7 +143,7 @@ function earSetup(){
 function earRound(){
   const pool=LEVELS[EAR.level].pool;EAR.round++;EAR.locked=false;
   const ans=pick(pool);const opts=shuffle([ans,...shuffle(pool.filter(c=>c!==ans)).slice(0,3)]);
-  $('#app').innerHTML=`<a class="back" href="#game-ear">← Quit</a>
+  $('#app').innerHTML=`<a class="back" href="#game-ear">‹ Quit</a>
    <div class="hud"><div><span class="eyebrow">Round</span><b>${EAR.round} / 10</b></div><div><span class="eyebrow">Score</span><b>${EAR.score}</b></div></div>
    <div class="stage"><button class="listen" id="eHear" aria-label="Play the chord again">▶</button><p class="muted" id="eMsg">Which chord is this?</p></div>
    <div class="answers">${opts.map(o=>`<button class="ans" data-a="${o}">${o}</button>`).join('')}</div>
@@ -171,7 +160,7 @@ function earRound(){
 }
 function earDone(){
   const isBest=setBest('ear:'+EAR.level,EAR.score);
-  $('#app').innerHTML=`<a class="back" href="#game-ear">← Name That Chord</a>
+  $('#app').innerHTML=`<a class="back" href="#game-ear">‹ Name That Chord</a>
    <div class="trainer" style="align-items:center;text-align:center"><p class="eyebrow">${LEVELS[EAR.level].name}</p>
    <div class="big" style="font-size:4rem">${EAR.score} / 10</div><p class="muted">${isBest?'New best for this level':''}</p>
    <p>${EAR.score>=9?'Great ears. Try the next level up.':EAR.score>=6?'Good. Most mix-ups are major versus minor, so listen for bright versus dark.':'Keep at it. Play each chord in the level on your guitar a few times and say its name out loud.'}</p>

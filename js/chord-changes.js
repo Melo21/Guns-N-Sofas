@@ -4,8 +4,7 @@ const TR={a:'G',b:'Em',bpm:60,beats:4,running:false,timer:null,raf:0,next:0,beat
 function changes(){
   stop();trStop(true);$('#player').hidden=true;
   const suggestions=[['G','C'],['G','Em'],['D','A'],['Em','C'],['A','E'],['Em7','G'],['Cadd9','Dsus4'],['D','Cadd9'],['C','Fmaj7'],['C','F mini'],['Am','F'],['F','G'],['E','F#m mini'],['A','F#m'],['D','F#m'],['E7','A7'],['A7','B7'],['A','Bm'],['F','Bb'],['B','F#'],['G#m','E']];
-  $('#app').innerHTML=`<header style="display:flex;flex-direction:column;gap:8px"><p class="eyebrow">Hands-free drill</p><h1>Chord changes</h1>
-  <p class="muted">Set your phone down and play. The click keeps time, the screen shows which chord to play, and the app counts every switch for one minute. When you can switch cleanly, raise the tempo.</p></header>${nav('changes')}
+  $('#app').innerHTML=`${pageHead('Chord changes','Set your phone down and play. One minute, counted for you.',['#practice','Practice'])}${nav('changes')}
   <div class="trainer">
    <div class="pair"><select id="ca" aria-label="First chord">${ALL.map(c=>`<option ${c===TR.a?'selected':''}>${c}</option>`).join('')}</select>
     <span class="muted">and</span><select id="cb" aria-label="Second chord">${ALL.map(c=>`<option ${c===TR.b?'selected':''}>${c}</option>`).join('')}</select></div>
@@ -23,7 +22,7 @@ function changes(){
    <div id="result" class="result" hidden></div>
    <div class="pair"><button class="btn" id="tStart">Start 1 minute</button><button class="btn ghost" id="tStop" hidden>Stop</button></div>
   </div>
-  <section class="sec"><h3>Pairs from your songs</h3><p class="muted" style="font-size:.85rem">Pairs are listed in chapter order, so the open-chord pairs come first.</p><div class="pills">${suggestions.map(p=>`<button class="pill" style="border:none;font-size:.9rem;padding:6px 10px" data-p="${p.join('|')}">${p[0]} ↔ ${p[1]}</button>`).join('')}</div>
+  <section class="sec"><h3>Pairs from your songs</h3><div class="pills">${suggestions.map(p=>`<button class="pill" style="border:none;font-size:.9rem;padding:6px 10px" data-p="${p.join('|')}">${p[0]} ↔ ${p[1]}</button>`).join('')}</div>
   <p class="muted" style="font-size:.88rem">Start with a switch every 4 beats. When a full minute feels clean, try 2 beats, then 1. After that, add 5 bpm at a time.</p></section>`;
   trPaint();
   $('#ca').onchange=e=>{TR.a=e.target.value;trPaint()};$('#cb').onchange=e=>{TR.b=e.target.value;trPaint()};
@@ -70,7 +69,7 @@ function trFinish(){trStop(true);$('#tStart').hidden=false;$('#tStop').hidden=tr
   const r=$('#result');r.hidden=false;
   r.innerHTML=`<p><strong>${TR.changes} changes at ${TR.bpm} bpm.</strong> How did they sound?</p>
    <div class="pair"><button class="btn" id="rClean">Clean, every chord rang</button><button class="btn ghost" id="rMessy">Some buzzed or were late</button></div>`;
-  $('#rClean').onclick=()=>{const all=store.get('ss-best2',{}),k=trKey();if(!all[k]||TR.bpm>all[k].bpm){all[k]={bpm:TR.bpm,changes:TR.changes};store.set('ss-best2',all)}
+  $('#rClean').onclick=()=>{const all=store.get('ss-best2',{}),k=trKey();if(!all[k]||TR.bpm>all[k].bpm){all[k]={bpm:TR.bpm,changes:TR.changes};store.set('ss-best2',all);toast('New best: '+TR.bpm+' bpm')}
     trPaint();r.innerHTML=`<p>Nice. Saved as your best for this pair. Next round, try ${TR.beats>1?'switching every '+(TR.beats/2)+' beat'+(TR.beats/2>1?'s':'')+' at the same tempo':TR.bpm+5+' bpm'}.</p>`};
   $('#rMessy').onclick=()=>{r.innerHTML=`<p>Stay at ${TR.bpm} bpm${TR.bpm>45?' or drop to '+(TR.bpm-5):''} and run it again. Clean and slow beats fast and sloppy.</p>`};
 }

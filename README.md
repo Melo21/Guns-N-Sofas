@@ -1,4 +1,8 @@
-# Strum Setlist
+# Guns N' Sofas
+
+<img src="icons/icon-192.png" alt="" width="72" align="right">
+
+**Couch guitar practice.**
 
 Guitar practice for people who know their open chords and want to keep growing without weekly lessons.
 Songs are grouped into chapters and labeled by difficulty, every song has a play-along with real acoustic
@@ -6,7 +10,7 @@ guitar sound, and TV mode turns any screen into a scrolling chord highway you ca
 
 ![TV mode: chords scroll toward a line while the strum pattern scrolls underneath](docs/screenshots/tv-mode.gif)
 
-**Try it:** [melo21.github.io/strum-setlist](https://melo21.github.io/strum-setlist/) (live once GitHub Pages is turned on; see below)
+**Try it:** [melo21.github.io/guns-n-sofas](https://melo21.github.io/guns-n-sofas/). On a phone, add it to your home screen to use it like an app.
 
 ## Features
 
@@ -25,7 +29,9 @@ guitar sound, and TV mode turns any screen into a scrolling chord highway you ca
   countdown to the next change, and keyboard or TV remote controls. The screen stays awake while you play.
 - **Practice tools:** a hands-free chord change drill, Chord Roulette, Strum It Back (hear a pattern, then
   play it), Name That Chord ear training, and a tuner that plays reference notes.
-- **Light and dark themes.** Progress, best scores, and settings are saved in your browser.
+- **Feels like an app:** search, a Jump back in row for recent songs, progress tracking, light and dark themes,
+  and a Settings screen. Install it to your home screen and it opens full screen and works offline.
+- Progress, best scores, and settings are saved on your device.
 
 ## Run it
 
@@ -54,7 +60,7 @@ Open the **TV mode** tab and pick a song. To get it on the TV:
 - **Laptop with Chrome:** use **Cast** from the Chrome menu, or connect with an HDMI cable.
 - **iPhone or iPad:** use **Screen Mirroring** to an Apple TV or AirPlay TV, with the phone turned sideways.
 - **Android:** use **Cast** or **Smart View** from quick settings.
-- **TV web browser:** open the GitHub Pages link directly.
+- **TV web browser:** open the website address directly.
 
 | Key | Action |
 |---|---|
@@ -108,13 +114,15 @@ level. The same check runs automatically on GitHub for every push and pull reque
   is busy redrawing TV mode.
 - Chord diagrams are drawn as SVG from a six-character shape such as `x32010`.
 - The Screen Wake Lock API keeps the screen on while music is playing.
+- A service worker caches the app and guitar samples, so it works offline once installed.
 
 ```
-index.html          page structure
+index.html          page structure and app shell
+manifest.webmanifest, sw.js, icons/   install to home screen and offline support
 css/styles.css      all styles, with light and dark themes
 data/chords.js      chord shapes
 data/songs.js       chapters and songs
-js/                 app code, loaded in order (core, audio, player, views, TV mode, games, tuner)
+js/                 app code, loaded in order (core, audio, player, views, TV mode, practice, tuner, shell)
 samples/            acoustic guitar notes (CC BY 3.0)
 scripts/            song data check
 ```

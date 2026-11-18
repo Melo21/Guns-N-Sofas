@@ -59,5 +59,5 @@ practice arrangements.
 
 ## Not affiliated
 
-Strum Setlist is an independent hobby project. It is not affiliated with or endorsed by any artist,
+Guns N' Sofas is an independent hobby project. The name is a parody. It is not affiliated with or endorsed by Guns N' Roses or any other artist,
 record label, publisher, or by Rocksmith or Ubisoft, which inspired TV mode.

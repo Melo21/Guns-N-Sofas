@@ -61,15 +61,14 @@ window.addEventListener('resize',()=>{if(TV.open)tvBuild()});
 function tvPicker(){
   stop();$('#player').hidden=true;
   const list=SONGS.filter(passes);
-  $('#app').innerHTML=`<header style="display:flex;flex-direction:column;gap:8px"><p class="eyebrow">Big screen</p><h1>TV mode</h1>
-   <p class="muted">Chords scroll toward a line like Rocksmith, with the strum arrows underneath and the current and next chord shapes on the side. Pick a song to start.</p></header>${nav('tv')}
+  $('#app').innerHTML=`${pageHead('TV mode','A scrolling chord highway for the big screen. Pick a song to start.')}${nav('tv')}
    ${filterRow()}
-   <details class="howto" open><summary>How to get it on your TV</summary>
+   <details class="howto"><summary>Getting it on your TV</summary>
     <ul class="steps">
      <li><b>Laptop with Chrome:</b> open this page, then in the Chrome menu (⋮) choose Cast and pick your TV. Or plug the laptop into the TV with an HDMI cable.</li>
      <li><b>iPhone or iPad:</b> open Control Center, tap Screen Mirroring, and pick your Apple TV or AirPlay TV. Turn the phone sideways.</li>
      <li><b>Android phone:</b> use Cast or Smart View from the quick settings and pick your TV. Turn the phone sideways.</li>
-     <li><b>TV web browser:</b> open the link and sign in to Claude, since this page is private to you.</li>
+     <li><b>TV web browser:</b> open this website's address directly.</li>
     </ul>
     <p class="muted" style="font-size:.9rem">Controls: Space or OK to play and stop, Left and Right for tempo, Up and Down to loop a section, F for full screen, Esc to exit. A Bluetooth keyboard or your laptop keys work, and many TV remotes send these keys in a TV browser. If the picture lags, turn on your TV's game mode.</p>
    </details>

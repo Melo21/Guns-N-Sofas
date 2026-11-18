@@ -1,4 +1,4 @@
-name: Check songs and publish site
+name: Check songs and publish Guns N' Sofas
 
 on:
   push:
@@ -36,6 +36,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
+      - name: Stamp the offline cache with this commit so installed apps update
+        run: sed -i "s/const VERSION = '[^']*';/const VERSION = 'gns-${GITHUB_SHA::7}';/" sw.js
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .

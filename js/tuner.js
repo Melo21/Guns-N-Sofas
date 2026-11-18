@@ -19,7 +19,7 @@ function tunerPaint(){document.querySelectorAll('[data-str]').forEach(b=>{const 
   $('#tnNow').innerHTML=cur?`Playing string ${cur.num}, <b>${cur.name}</b> (${cur.note}). Tap it again to stop.`:'Tap a string to hear its note on repeat.'}
 function tuner(){
   stop();$('#player').hidden=true;
-  $('#app').innerHTML=`<header style="display:flex;flex-direction:column;gap:8px"><p class="eyebrow">Standard tuning · E A D G B E</p><h1>Tuner</h1></header>${nav('tuner')}
+  $('#app').innerHTML=`${pageHead('Tuner','Standard tuning · E A D G B E')}${nav('tuner')}
    <div class="trainer">
     <div class="strings" role="group" aria-label="Strings, thickest to thinnest">${STRINGS.map((s,i)=>`<button class="strbtn" data-str="${i}" aria-pressed="false"><b>${s.n}</b><small>${s.num}</small></button>`).join('')}</div>
     <p class="muted" id="tnNow" aria-live="polite"></p>
@@ -32,7 +32,7 @@ function tuner(){
      <li>Pluck the same string on your guitar and turn its peg slowly.</li>
      <li>Listen for a wobble between the two notes. The wobble slows down as you get close and stops when they match.</li>
      <li>Not sure if you are too high or too low? Loosen the string a little below the note, then tighten up to it.</li></ol>
-    <p class="muted" style="font-size:.88rem">The steady tone makes the wobble easier to hear. This page cannot use your phone's microphone, so it cannot read your tuning for you. For a needle-style readout, use a clip-on tuner or a free tuner app alongside this.</p></section>`;
+    <p class="muted small">The steady tone makes the wobble easier to hear. For a needle readout, use a clip-on tuner alongside this.</p></section>`;
   tunerPaint();
   document.querySelectorAll('[data-str]').forEach(b=>b.onclick=()=>tunerPlay(+b.dataset.str));
   document.querySelectorAll('[data-tmode]').forEach(b=>b.onclick=()=>{TN.mode=b.dataset.tmode;store.set('ss-tunemode',TN.mode);
